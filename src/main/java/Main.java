@@ -14,19 +14,18 @@ public class Main {
 
         for (SorterType type : SorterType.values()) {
             ISorter sorter = sorterFactory.build(type);
-            int[] arr = Arrays.copyOf(testSample, testSample.length);
+            int[] testArr = Arrays.copyOf(testSample, testSample.length);
             long memBef = Runtime.getRuntime().totalMemory();
             long start = System.nanoTime();
-            sorter.sort(arr);
+            sorter.sort(testArr);
             long end = System.nanoTime();
             long memAft = Runtime.getRuntime().totalMemory();
-
-
-            boolean success = sortVerifier.verifySortResult(testSample, arr);
+            
+            boolean success = sortVerifier.isSorted(testArr);
             System.out.println("Algorithm: " + type.toString());
             System.out.println("Success: " + success);
             System.out.println("Runtime: " + (end-start) + "ns");
-            System.out.println("Mem usage: " + (memAft-memBef) + " bytes");
+            System.out.println("Mem usage: " + (memAft-memBef) + " bytes\n");
 
         }
     }
