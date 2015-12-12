@@ -1,0 +1,6 @@
+
+ - Implement algorithms
+ - Automatic random generation of sample sets (different sizes)
+ - Visualisation of sort algorithms in progress
+ - Calculate complexity (space and time) from experiments -> see if matches theoretical complexity.
+ - Graphs the time and space complexity or output in form that can be graphed in JS library.
