@@ -13,7 +13,7 @@ public class Main {
         SortVerifier sortVerifier = new SortVerifier();
         SetGenerator setGenerator = new SetGenerator();
 
-        int[] sampleSizes = { 10, 100, 1000 };
+        int[] sampleSizes = { 10, 100, 1000, 10000 };
 
         for (int sampleSize : sampleSizes) {
             List<Integer> testSample = setGenerator.generateSet(sampleSize);
@@ -30,9 +30,8 @@ public class Main {
                 boolean success = sortVerifier.isSorted(sortedArr);
                 System.out.print("Algorithm: " + type.toString());
                 System.out.print(" | Success: " + success);
-                System.out.print(" | Runtime: " + (end - start) + "ns");
-                System.out.print(" | Output: " + sortedArr + "\n");
-
+                System.out.print(" | Runtime: " + ((double)(end - start))/1000d + "ms\n");
+                //System.out.print(" | Output: " + sortedArr + "\n");
             }
 
             System.out.println();
