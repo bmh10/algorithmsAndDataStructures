@@ -1,7 +1,9 @@
 import algorithms.ISorter;
 import algorithms.SorterType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
@@ -9,24 +11,31 @@ public class Main {
 
         SorterFactory sorterFactory = new SorterFactory();
         SortVerifier sortVerifier = new SortVerifier();
+        SetGenerator setGenerator = new SetGenerator();
 
-        int[] testSample = {1,6,2,7,8,10,65};
+        int[] sampleSizes = { 10, 100, 1000 };
 
-        for (SorterType type : SorterType.values()) {
-            ISorter sorter = sorterFactory.build(type);
-            int[] testArr = Arrays.copyOf(testSample, testSample.length);
-            long memBef = Runtime.getRuntime().totalMemory();
-            long start = System.nanoTime();
-            sorter.sort(testArr);
-            long end = System.nanoTime();
-            long memAft = Runtime.getRuntime().totalMemory();
-            
-            boolean success = sortVerifier.isSorted(testArr);
-            System.out.println("Algorithm: " + type.toString());
-            System.out.println("Success: " + success);
-            System.out.println("Runtime: " + (end-start) + "ns");
-            System.out.println("Mem usage: " + (memAft-memBef) + " bytes\n");
+        for (int sampleSize : sampleSizes) {
+            List<Integer> testSample = setGenerator.generateSet(sampleSize);
+            System.out.println("Sample size: " + sampleSize);
 
+            for (SorterType type : SorterType.values()) {
+                ISorter sorter = sorterFactory.build(type);
+                List<Integer> testArr = new ArrayList<Integer>(testSample);
+
+                long start = System.nanoTime();
+                List<Integer> sortedArr = sorter.sort(testArr);
+                long end = System.nanoTime();
+
+                boolean success = sortVerifier.isSorted(sortedArr);
+                System.out.print("Algorithm: " + type.toString());
+                System.out.print(" | Success: " + success);
+                System.out.print(" | Runtime: " + (end - start) + "ns");
+                System.out.print(" | Output: " + sortedArr + "\n");
+
+            }
+
+            System.out.println();
         }
     }
 }

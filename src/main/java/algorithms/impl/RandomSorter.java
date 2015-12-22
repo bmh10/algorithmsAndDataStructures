@@ -2,25 +2,28 @@ package algorithms.impl;
 
 import algorithms.ISorter;
 
+import java.util.List;
 import java.util.Random;
 
 public class RandomSorter implements ISorter {
 
-    public void sort(int[] arr) {
+    public List<Integer> sort(List<Integer> arr) {
         Random rand = new Random();
-        final int len = arr.length;
+        final int len = arr.size();
         while (!isSorted(arr)) {
             int i = rand.nextInt(len);
             int j = rand.nextInt(len);
-            int tmp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = tmp;
+            int tmp = arr.get(i);
+            arr.set(i, arr.get(j));
+            arr.set(j, tmp);
         }
+
+        return arr;
     }
 
-    private boolean isSorted(int[] arr) {
-        for (int n = 1; n < arr.length; n++) {
-            if (arr[n-1] > arr[n]) {
+    private boolean isSorted(List<Integer> arr) {
+        for (int n = 1; n < arr.size(); n++) {
+            if (arr.get(n-1) > arr.get(n)) {
                 return false;
             }
         }

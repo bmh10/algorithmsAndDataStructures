@@ -8,8 +8,8 @@ public class SorterFactory {
 
     public ISorter build(SorterType type) {
         switch (type) {
-            case RANDOM:
-                return new RandomSorter();
+            //case RANDOM:
+            //    return new RandomSorter();
             case QUICKSORT:
                 return new QuickSorter();
         }

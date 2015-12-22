@@ -1,10 +1,10 @@
-import java.util.Arrays;
+import java.util.List;
 
 public class SortVerifier {
 
-    public boolean isSorted(int[] arr) {
-        for (int n = 1; n < arr.length; n++) {
-            if (arr[n-1] > arr[n]) {
+    public boolean isSorted(List<Integer> arr) {
+        for (int n = 1; n < arr.size(); n++) {
+            if (arr.get(n-1) > arr.get(n)) {
                 return false;
             }
         }

@@ -1,6 +1,8 @@
 package algorithms;
 
+import java.util.List;
+
 public interface ISorter {
 
-    void sort(int[] arr);
+    List<Integer> sort(List<Integer> arr);
 }
