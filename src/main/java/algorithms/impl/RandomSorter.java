@@ -2,12 +2,19 @@ package algorithms.impl;
 
 import algorithms.ISorter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class RandomSorter implements ISorter {
 
     public List<Integer> sort(List<Integer> arr) {
+        if (arr == null) {
+            return new ArrayList<Integer>();
+        }
+        if (arr.isEmpty() || arr.size() == 1) {
+            return arr;
+        }
         Random rand = new Random();
         final int len = arr.size();
         while (!isSorted(arr)) {

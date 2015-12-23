@@ -1,5 +1,6 @@
 import algorithms.ISorter;
 import algorithms.SorterType;
+import algorithms.impl.MergeSorter;
 import algorithms.impl.QuickSorter;
 import algorithms.impl.RandomSorter;
 import exception.AlgorithmNotFoundException;
@@ -12,6 +13,8 @@ public class SorterFactory {
             //    return new RandomSorter();
             case QUICKSORT:
                 return new QuickSorter();
+            case MERGESORT:
+                return new MergeSorter();
         }
 
         throw new AlgorithmNotFoundException(String.format("The algorithm %s could not be found", type.toString()));

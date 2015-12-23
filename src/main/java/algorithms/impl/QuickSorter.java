@@ -3,7 +3,6 @@ package algorithms.impl;
 import algorithms.ISorter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 // Time: avg O(nlog(n)) worst O(n^2)
@@ -11,6 +10,9 @@ import java.util.List;
 public class QuickSorter implements ISorter {
 
     public List<Integer> sort(List<Integer> arr) {
+        if (arr == null) {
+            return new ArrayList<Integer>();
+        }
         if (arr.isEmpty() || arr.size() == 1) {
             return arr;
         }
