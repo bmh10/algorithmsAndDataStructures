@@ -7,7 +7,7 @@ import java.util.List;
 
 // Time: best O(n) avg O(n^2) worst O(n^2)
 // Space: worst O(1)
-public class BubbleSorter implements ISorter {
+public class InsertionSorter implements ISorter {
 
     public List<Integer> sort(List<Integer> arr) {
         if (arr == null) {
@@ -17,18 +17,12 @@ public class BubbleSorter implements ISorter {
             return arr;
         }
 
-        int n = arr.size();
-        int lastSwappedIdx = Integer.MAX_VALUE;
-        while (lastSwappedIdx != 0) {
-            lastSwappedIdx = 0;
-            for (int i = 1; i < n; i++) {
-                if (arr.get(i) < arr.get(i - 1)) {
-                    swap(arr, i, i-1);
-                    lastSwappedIdx = i;
-                }
+        for (int i = 1; i < arr.size(); i++) {
+            int j = i;
+            while (j > 0 && arr.get(j) < arr.get(j-1)) {
+                swap(arr, j, j-1);
+                j--;
             }
-
-            n = lastSwappedIdx;
         }
 
         return arr;
