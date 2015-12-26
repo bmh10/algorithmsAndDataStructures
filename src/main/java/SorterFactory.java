@@ -17,6 +17,8 @@ public class SorterFactory {
                 return new BubbleSorter();
             case INSERTIONSORT:
                 return new InsertionSorter();
+            case SELECTIONSORT:
+                return new SelectionSorter();
         }
 
         throw new AlgorithmNotFoundException(String.format("The algorithm %s could not be found", type.toString()));
