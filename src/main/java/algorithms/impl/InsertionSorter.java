@@ -18,19 +18,15 @@ public class InsertionSorter implements ISorter {
         }
 
         for (int i = 1; i < arr.size(); i++) {
+            int x = arr.get(i);
             int j = i;
-            while (j > 0 && arr.get(j) < arr.get(j-1)) {
-                swap(arr, j, j-1);
+            while (j > 0 && x < arr.get(j-1)) {
+                arr.set(j, arr.get(j-1));
                 j--;
             }
+            arr.set(j, x);
         }
 
         return arr;
-    }
-
-    private void swap(List<Integer> arr, int i, int j) {
-        int tmp = arr.get(i);
-        arr.set(i, arr.get(j));
-        arr.set(j, tmp);
     }
 }
