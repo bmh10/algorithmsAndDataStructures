@@ -11,8 +11,11 @@ public class IntMaxHeap {
         this.arr = new ArrayList<Integer>();
     }
 
-    public IntMaxHeap(List<Integer> arr) {
-        this.arr = arr;
+    public void heapify(List<Integer> arr) {
+        // TODO: this is inefficient O(nlogn)
+        for (int i : arr) {
+            insert(i);
+        }
     }
 
     public void insert(int val) {
@@ -28,14 +31,68 @@ public class IntMaxHeap {
         }
     }
 
-    public void extract(int val) {
-        
+    public int extract() {
+        if (arr.isEmpty()) {
+            return 0;
+        }
+
+        if (arr.size() == 1) {
+            return arr.remove(0);
+        }
+
+        swap(0, arr.size()-1);
+        int removed = arr.remove(arr.size()-1);
+
+        int val = arr.get(0);
+        int currentIdx = 0;
+        int nextToSwapIdx = 0;
+        Integer leftChildVal = getLeftChildVal(0);
+        Integer rightChildVal = getRightChildVal(0);
+
+        while ((leftChildVal != null && val < leftChildVal)
+            || (rightChildVal != null && val < rightChildVal)) {
+
+            if (leftChildVal != null && val < leftChildVal
+             && rightChildVal != null && val < rightChildVal) {
+                if (leftChildVal > rightChildVal) {
+                    nextToSwapIdx = getLeftChildIdx(currentIdx);
+                } else {
+                    nextToSwapIdx = getRightChildIdx(currentIdx);
+                }
+            } else if (leftChildVal != null && val < leftChildVal) {
+                nextToSwapIdx = getLeftChildIdx(currentIdx);
+            } else {
+                nextToSwapIdx = getRightChildIdx(currentIdx);
+            }
+
+            swap(currentIdx, nextToSwapIdx);
+            currentIdx = nextToSwapIdx;
+
+            leftChildVal = getLeftChildVal(currentIdx);
+            rightChildVal = getRightChildVal(currentIdx);
+        }
+
+        return removed;
     }
 
     private void swap(int i, int j) {
         int tmp = arr.get(i);
         arr.set(i, arr.get(j));
         arr.set(j, tmp);
+    }
+
+    public void print() {
+        int nodes = 1;
+        for (int i = 0; i < arr.size();) {
+            for (int j = 0; j < nodes; j++) {
+                if (i+j < arr.size()) {
+                    System.out.print(arr.get(i + j) + " ");
+                }
+            }
+            i+= nodes;
+            nodes *= 2;
+            System.out.println();
+        }
     }
 
     private int getParentIdx(int idx) {

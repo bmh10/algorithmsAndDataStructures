@@ -19,6 +19,8 @@ public class SorterFactory {
                 return new InsertionSorter();
             case SELECTIONSORT:
                 return new SelectionSorter();
+            case HEAPSORT:
+                return new HeapSorter();
         }
 
         throw new AlgorithmNotFoundException(String.format("The algorithm %s could not be found", type.toString()));

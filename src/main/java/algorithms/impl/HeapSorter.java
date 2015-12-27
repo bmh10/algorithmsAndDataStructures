@@ -1,6 +1,7 @@
 package algorithms.impl;
 
 import algorithms.ISorter;
+import datastructures.IntMaxHeap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +18,16 @@ public class HeapSorter implements ISorter {
             return arr;
         }
 
-        heapify(arr);
+        IntMaxHeap maxHeap = new IntMaxHeap();
+        maxHeap.heapify(arr);
+        //maxHeap.print();
 
+        List<Integer> sorted = new ArrayList<Integer>();
+        for (int i = 0; i < arr.size(); i++) {
+            int a = maxHeap.extract();
+            sorted.add(0, a);
+        }
 
-        return arr;
+        return sorted;
     }
-
-    // Builds max-heap from list in O(n)
-    private List<Integer> heapify(List<Integer> arr) {
-
-    }
-
-
-
-
-
 }
