@@ -12,15 +12,27 @@ public class IntMaxHeap {
     }
 
     public void heapify(List<Integer> arr) {
-        // TODO: this is inefficient O(nlogn)
-        for (int i : arr) {
-            insert(i);
+        // O(n)
+        this.arr = arr;
+        for (int i = arr.size()/2; i >= 0; i--) {
+            siftDown(i);
         }
+
+
+        // TODO: this is inefficient O(nlogn)
+        //for (int i : arr) {
+        //    insert(i);
+        //}
     }
 
     public void insert(int val) {
         arr.add(val);
+        siftUp();
+    }
+
+    private void siftUp() {
         int currentIdx = arr.size() - 1;
+        int val = arr.get(currentIdx);
         Integer parentVal = getParentVal(currentIdx);
 
         while (parentVal != null && val > parentVal) {
@@ -31,48 +43,43 @@ public class IntMaxHeap {
         }
     }
 
-    public int extract() {
+    public int extractRoot() {
         if (arr.isEmpty()) {
-            return 0;
+            throw new NullPointerException("Heap is empty");
         }
 
         if (arr.size() == 1) {
             return arr.remove(0);
         }
 
-        swap(0, arr.size()-1);
-        int removed = arr.remove(arr.size()-1);
+        swap(0, arr.size() - 1);
+        int removed = arr.remove(arr.size() - 1);
+        siftDown();
+        return removed;
+    }
 
-        int val = arr.get(0);
-        int currentIdx = 0;
-        int nextToSwapIdx = 0;
-        Integer leftChildVal = getLeftChildVal(0);
-        Integer rightChildVal = getRightChildVal(0);
+    private void siftDown() {
+        siftDown(0);
+    }
 
-        while ((leftChildVal != null && val < leftChildVal)
-            || (rightChildVal != null && val < rightChildVal)) {
+    private void siftDown(int currentIdx) {
+        int largestIdx = currentIdx;
+        int leftIdx = getLeftChildIdx(currentIdx);
+        int rightIdx = getRightChildIdx(currentIdx);
 
-            if (leftChildVal != null && val < leftChildVal
-             && rightChildVal != null && val < rightChildVal) {
-                if (leftChildVal > rightChildVal) {
-                    nextToSwapIdx = getLeftChildIdx(currentIdx);
-                } else {
-                    nextToSwapIdx = getRightChildIdx(currentIdx);
-                }
-            } else if (leftChildVal != null && val < leftChildVal) {
-                nextToSwapIdx = getLeftChildIdx(currentIdx);
-            } else {
-                nextToSwapIdx = getRightChildIdx(currentIdx);
-            }
-
-            swap(currentIdx, nextToSwapIdx);
-            currentIdx = nextToSwapIdx;
-
-            leftChildVal = getLeftChildVal(currentIdx);
-            rightChildVal = getRightChildVal(currentIdx);
+        if (leftIdx < arr.size() && arr.get(leftIdx) > arr.get(largestIdx)) {
+            largestIdx = leftIdx;
+        }
+        if (rightIdx < arr.size() && arr.get(rightIdx) > arr.get(largestIdx)) {
+            largestIdx = rightIdx;
         }
 
-        return removed;
+        if (largestIdx == currentIdx) {
+            return;
+        }
+
+        swap(currentIdx, largestIdx);
+        siftDown(largestIdx);
     }
 
     private void swap(int i, int j) {

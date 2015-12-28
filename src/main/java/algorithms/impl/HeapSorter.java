@@ -24,8 +24,7 @@ public class HeapSorter implements ISorter {
 
         List<Integer> sorted = new ArrayList<Integer>();
         for (int i = 0; i < arr.size(); i++) {
-            int a = maxHeap.extract();
-            sorted.add(0, a);
+            sorted.add(0, maxHeap.extractRoot());
         }
 
         return sorted;

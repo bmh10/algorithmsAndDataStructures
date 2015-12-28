@@ -18,6 +18,7 @@ public class QuickSorter implements ISorter {
         }
 
         int pivot = arr.get(0);
+        // TODO: implement in-place, no need to create more array lists
         List less = new ArrayList();
         List more = new ArrayList();
         for (int i = 1; i < arr.size(); i++) {

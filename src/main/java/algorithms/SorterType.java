@@ -7,5 +7,6 @@ public enum SorterType {
     BUBBLESORT,
     INSERTIONSORT,
     SELECTIONSORT,
-    HEAPSORT
+    HEAPSORT,
+    SHELLSORT
 }
