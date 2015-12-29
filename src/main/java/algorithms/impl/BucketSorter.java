@@ -31,7 +31,7 @@ public class BucketSorter implements ISorter {
             if (i < min) {
                 min = i;
             }
-            allSame &= i == first;
+            allSame &= (i == first);
         }
 
         if (allSame) {
@@ -40,31 +40,21 @@ public class BucketSorter implements ISorter {
 
         List[] buckets = new List[NUM_BUCKETS];
         int range = max - min;
-        if (range < NUM_BUCKETS) {
-            range = NUM_BUCKETS;
+        int bucketSize = 1;
+        if (range >= NUM_BUCKETS) {
+            bucketSize = ((Double) Math.ceil((double) (range+1) / (double) NUM_BUCKETS)).intValue();
         }
 
-        int bucketSize = ((Double) Math.ceil((double) range / (double) NUM_BUCKETS)).intValue();
-
         for (int i : arr) {
-            int bucketIdx = i == max ? buckets.length-1 : Math.floorDiv(i - min, bucketSize);
-            /*try {*/
-                if (buckets[bucketIdx] == null) {
-                    buckets[bucketIdx] = new ArrayList();
-                }
-                buckets[bucketIdx].add(i);
-            /*} catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("i=" + i + " range=" + range + " min=" + min + " arr=" + arr + " Exception: " + e);
-                System.exit(1);
-            }*/
+            int bucketIdx = Math.floorDiv(i - min, bucketSize);
+            if (buckets[bucketIdx] == null) {
+                buckets[bucketIdx] = new ArrayList();
+            }
+            buckets[bucketIdx].add(i);
         }
 
         List<Integer> sorted = new ArrayList<Integer>();
         for (List bucket : buckets) {
-            /*if (bucket != null && bucket.equals(arr)) {
-                System.out.println("Infinite loop detected. Arr: " + arr);
-                System.exit(1);
-            }*/
             sorted.addAll(sort(bucket));
         }
 
