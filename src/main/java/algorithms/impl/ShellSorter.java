@@ -5,8 +5,8 @@ import algorithms.ISorter;
 import java.util.ArrayList;
 import java.util.List;
 
-// Time: best O(n) avg O(nlog(n)) worst O(nlog(n))
-// Space: worst O(n)
+// Time: best O(n) avg O((nlog(n))^2) worst O((nlog(n))^2)
+// Space: worst O(1)
 public class ShellSorter implements ISorter {
 
     int[] gaps = { 701, 301, 132, 57, 23, 10, 4, 1 };

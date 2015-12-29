@@ -8,5 +8,6 @@ public enum SorterType {
     INSERTIONSORT,
     SELECTIONSORT,
     HEAPSORT,
-    SHELLSORT
+    SHELLSORT,
+    BUCKETSORT
 }

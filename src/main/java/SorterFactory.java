@@ -23,6 +23,8 @@ public class SorterFactory {
                 return new HeapSorter();
             case SHELLSORT:
                 return new ShellSorter();
+            case BUCKETSORT:
+                return new BucketSorter();
         }
 
         throw new AlgorithmNotFoundException(String.format("The algorithm %s could not be found", type.toString()));

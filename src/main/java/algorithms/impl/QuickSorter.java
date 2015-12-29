@@ -17,6 +17,7 @@ public class QuickSorter implements ISorter {
             return arr;
         }
 
+        // TODO: optimize pivot choice
         int pivot = arr.get(0);
         // TODO: implement in-place, no need to create more array lists
         List less = new ArrayList();
