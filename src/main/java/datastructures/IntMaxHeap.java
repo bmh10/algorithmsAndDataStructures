@@ -5,6 +5,7 @@ import java.util.List;
 
 public class IntMaxHeap {
 
+    // Data can be efficiently stored in array since tree is always complete binary tree
     private List<Integer> arr;
 
     public IntMaxHeap() {
