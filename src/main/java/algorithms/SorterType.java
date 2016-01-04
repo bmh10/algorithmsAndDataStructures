@@ -9,5 +9,6 @@ public enum SorterType {
     SELECTIONSORT,
     HEAPSORT,
     SHELLSORT,
-    BUCKETSORT
+    BUCKETSORT,
+    TREESORT
 }

@@ -28,4 +28,8 @@ public class MyStack<E> {
     public int size() {
         return data.size();
     }
+
+    public boolean isEmpty() {
+        return data.isEmpty();
+    }
 }

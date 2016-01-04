@@ -1,8 +1,8 @@
 package datastructures.tree;
 
-import java.util.Comparator;
-import java.util.TreeMap;
-import java.util.TreeSet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BinarySearchTree<K, V> {
 
@@ -10,6 +10,16 @@ public class BinarySearchTree<K, V> {
     //private TreeMap treeMap;
 
     private Node<K, V> root;
+
+    private boolean delete_useLeftSubstree = true;
+
+    public BinarySearchTree() {}
+
+    public BinarySearchTree(List<K> arr) {
+        for (K key : arr) {
+            insert(key, null);
+        }
+    }
 
 
     public void insert(K key, V value) {
@@ -45,12 +55,58 @@ public class BinarySearchTree<K, V> {
         else parent.right = newNode;
     }
 
-    public void delete() {
-        // TODO
+    public void delete(Object key) {
+        Node<K, V> node = getNode(key);
+
+        // No child or single child
+        if (node.left == null || node.right == null) {
+            Node childToMoveUp = node.right == null ? node.left : node.right;
+            if (node.parent == null) {
+                assert node.equals(root);
+                root = childToMoveUp;
+            } else {
+                if (node.parent.left.equals(node)) {
+                    node.parent.left = childToMoveUp;
+                } else if (node.parent.right.equals(node)) {
+                    node.parent.right = childToMoveUp;
+                }
+            }
+
+            return;
+        }
+
+        // 2 children
+        Node<K, V> predecessorOrSuccessor = delete_useLeftSubstree ? findMax(node.left) : findMin(node.right);
+        delete_useLeftSubstree = !delete_useLeftSubstree;
+        node.key = predecessorOrSuccessor.key;
+        node.value = predecessorOrSuccessor.value;
+        delete(predecessorOrSuccessor);
     }
 
+    private Node<K, V> findMin(Node<K, V> node) {
+        Node<K, V> currentNode = node;
+        while (currentNode.left != null) {
+            currentNode = currentNode.left;
+        }
+
+        return currentNode;
+    }
+
+    private Node<K, V> findMax(Node<K, V> node) {
+        Node<K, V> currentNode = node;
+        while (currentNode.right != null) {
+            currentNode = currentNode.right;
+        }
+
+        return currentNode;
+    }
 
     public V search(Object key) {
+        Node<K, V> node = getNode(key);
+        return node.value;
+    }
+
+    private Node<K, V> getNode(Object key) {
         if (key == null) {
             return null;
         }
@@ -62,10 +118,25 @@ public class BinarySearchTree<K, V> {
             val = cmp.compareTo(curr.key);
             if (val < 0) curr = curr.left;
             else if (val > 0) curr = curr.right;
-            else return curr.value;
+            else return curr;
         }
 
         return null;
+    }
+
+    public List<K> flatten_depthFirst_inOrder() {
+        return flatten_depthFirst_inOrder(root);
+    }
+
+    private List<K> flatten_depthFirst_inOrder(Node<K, V> node) {
+        List<K> keys = new ArrayList<K>();
+        if (node == null) {
+            return keys;
+        }
+        keys.addAll(flatten_depthFirst_inOrder(node.left));
+        keys.add(node.key);
+        keys.addAll(flatten_depthFirst_inOrder(node.right));
+        return keys;
     }
 
     // TODO: switch to threaded binary tree impl
@@ -82,8 +153,21 @@ public class BinarySearchTree<K, V> {
             this.value = value;
         }
 
+        public boolean equals(Object o) {
+            if (o == null || !(o instanceof Node)) {
+                return false;
+            }
 
+            Node other = (Node) o;
+            boolean sameKey = key == null ? other.key == null : key.equals(other.key);
+            boolean sameValue = value == null ? other.value == null : value.equals(other.value);
+            return sameKey && sameValue;
+        }
 
-
+        public int hashCode() {
+            int keyHash = key == null ? 0 : key.hashCode();
+            int valueHash = value == null ? 0 : value.hashCode();
+            return keyHash ^ valueHash;
+        }
     }
 }
