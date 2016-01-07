@@ -21,7 +21,6 @@ public class TreeSorter implements ISorter {
 
         BinarySearchTree<Integer, String> binarySearchTree = new BinarySearchTree<Integer, String>(arr);
 
-        //TODO: in-order traversal to return sorted elements.
         List<Integer> sorted = binarySearchTree.flatten_depthFirst_inOrder();
         return sorted;
     }

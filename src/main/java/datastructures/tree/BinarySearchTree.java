@@ -22,15 +22,15 @@ public class BinarySearchTree<K, V> {
     }
 
 
-    public void insert(K key, V value) {
+    public Node<K, V> insert(K key, V value) {
         if (key == null) {
-            return;
+            return null;
         }
 
         // Case where tree is empty
         if (root == null) {
             root = new Node<K, V>(key, value);
-            return;
+            return root;
         }
 
         Comparable<? super K> keyToInsert = (Comparable<? super K>) key;
@@ -45,7 +45,7 @@ public class BinarySearchTree<K, V> {
             // Case where key already present in tree
             else {
                 curr.value = value;
-                return;
+                return curr;
             }
         }
 
@@ -53,6 +53,7 @@ public class BinarySearchTree<K, V> {
         Node newNode = new Node<K, V>(key, value);
         if (val < 0) parent.left = newNode;
         else parent.right = newNode;
+        return newNode;
     }
 
     public void delete(Object key) {
@@ -140,13 +141,16 @@ public class BinarySearchTree<K, V> {
     }
 
     // TODO: switch to threaded binary tree impl
-    private class Node<K, V> {
+    protected class Node<K, V> {
 
-        private K key;
-        private V value;
-        private Node<K,V> left;
-        private Node<K,V> right;
-        private Node<K,V> parent;
+        protected K key;
+        protected V value;
+        protected Node<K,V> left;
+        protected Node<K,V> right;
+        protected Node<K,V> parent;
+
+        // Used for Red-Black tree only
+        protected boolean black;
 
         public Node(K key, V value) {
             this.key = key;
