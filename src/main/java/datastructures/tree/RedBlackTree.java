@@ -107,15 +107,8 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
         }
     }
 
-    private void rotateRight_noParent(Node n) {
-        Node tmp = new Node(n.left);
-        n.left.right = n;
-
-
-    }
-
     // TODO: make generic for case 5 when there is no parent node
-    private void rotateLeft(Node n) {
+/*    private void rotateLeft(Node n) {
         Node p = n.parent;
         p.left = n.right;
         p.left.parent = p;
@@ -126,9 +119,29 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
         p.left.left = n;
         n.parent = p.left;
 
+    }*/
+
+
+    // TODO: needs testing
+    private void rotateRight_noParent(Node n) {
+        Node tmp = new Node(n.left);
+        tmp.parent = n.parent;
+        if (n.parent != null) {
+            if (n.parent.left.equals(n)) {
+                n.parent.left = tmp;
+            } else {
+                n.parent.right = tmp;
+            }
+        }
+
+        n.left = n.left.right;
+        n.left.parent = n;
+
+        tmp.right = n;
+        n.parent = tmp;
     }
 
-    private void rotateRight(Node n) {
+/*    private void rotateRight(Node n) {
         Node p = n.parent;
         p.right = n.left;
         p.right.parent = p;
@@ -138,7 +151,7 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
 
         p.right.right = n;
         n.parent = p.right;
-    }
+    }*/
 
     public void delete(Object key) {
         // TODO
