@@ -27,17 +27,135 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
     }
 
     public Node<K, V> insert(K key, V value) {
-        Node<K, V> newNode = super.insert(key, value);
-        newNode.black = false;
-        newNode.left = blackLeafSentinel;
-        newNode.right = blackLeafSentinel;
+        Node<K, V> n = super.insert(key, value);
+        n.black = false;
+        n.left = blackLeafSentinel;
+        n.right = blackLeafSentinel;
+        repaint(n);
+        return n;
+    }
 
-        // TODO
+    private void repaint(Node n) {
+        repaint_case1(n);
+    }
 
-        return null;
+    // Case 1 - current new node it at root
+    private void repaint_case1(Node n) {
+        if (n.parent == null) {
+            n.black = true;
+        } else {
+            repaint_case2(n);
+        }
+    }
+
+    // Case 2 - current node's parent is black
+    private void repaint_case2(Node n) {
+        if (n.parent.black) {
+            return;
+        } else {
+            repaint_case3(n);
+        }
+    }
+
+    // Case 3 - parent and uncle are red
+    // N.B. Must be a grandparent as root is always black
+    // Can assume parent is red from previous case
+    private void repaint_case3(Node n) {
+        Node u = getUncle(n);
+        if (u != null && !u.black) {
+            n.parent.black = true;
+            getUncle(n).black = true;
+            Node gp = getGrandparent(n);
+            gp.black = false;
+            repaint_case1(gp);
+        } else {
+            repaint_case4(n);
+        }
+    }
+
+    // Case 4 - parent is red, uncle is black,
+    // n is right child of parent and parent is left child of grandparent
+    // (or mirror image)
+    private void repaint_case4(Node n) {
+        // Parent red, uncle black can be assumed from previous cases
+        Node gp = getGrandparent(n);
+        Node p = n.parent;
+
+        if (n.equals(p.right) && p.equals(gp.left)) {
+            rotateLeft(p);
+        } else if (n.equals(p.left) && p.equals(gp.right)) {
+            rotateRight(p);
+        }
+
+        repaint_case5(p);
+    }
+
+    // Case 5 - parent is red, uncle is black,
+    // n is left child of parent and parent is left child of grandparent
+    // (or mirror image)
+    private void repaint_case5(Node n) {
+        Node gp = getGrandparent(n);
+        Node p = n.parent;
+
+        p.black = true;
+        gp.black = false;
+
+        if (n.equals(p.left)) {
+            rotateRight(gp);
+        } else {
+            rotateLeft(gp);
+        }
+    }
+
+    private void rotateRight_noParent(Node n) {
+        Node tmp = new Node(n.left);
+        n.left.right = n;
+
+
+    }
+
+    // TODO: make generic for case 5 when there is no parent node
+    private void rotateLeft(Node n) {
+        Node p = n.parent;
+        p.left = n.right;
+        p.left.parent = p;
+
+        n.right = p.left.left;
+        n.right.parent = n;
+
+        p.left.left = n;
+        n.parent = p.left;
+
+    }
+
+    private void rotateRight(Node n) {
+        Node p = n.parent;
+        p.right = n.left;
+        p.right.parent = p;
+
+        n.left = p.right.right;
+        n.left.parent = n;
+
+        p.right.right = n;
+        n.parent = p.right;
     }
 
     public void delete(Object key) {
         // TODO
+    }
+
+    private Node getGrandparent(Node n) {
+        if (n == null || n.parent == null) return null;
+        return n.parent.parent;
+    }
+
+    private Node getUncle(Node n) {
+        Node gp = getGrandparent(n);
+        if (gp == null) return null;
+        if (gp.left != null && gp.left.equals(n.parent)) {
+            return gp.right;
+        } else {
+            return gp.left;
+        }
     }
 }

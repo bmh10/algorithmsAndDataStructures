@@ -157,6 +157,15 @@ public class BinarySearchTree<K, V> {
             this.value = value;
         }
 
+        public Node(Node<K, V> n) {
+            this.key = n.key;
+            this.value = n.value;
+            this.left = n.left;
+            this.right = n.right;
+            this.parent = parent;
+            this.black = n.black;
+        }
+
         public boolean equals(Object o) {
             if (o == null || !(o instanceof Node)) {
                 return false;
