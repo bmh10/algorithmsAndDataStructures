@@ -18,19 +18,23 @@ package datastructures.tree;
 // to the nearest leaf.'
 public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
 
-    private Node<K, V> blackLeafSentinel;
+//    private Node<K, V> blackLeafSentinel;
 
     public RedBlackTree() {
         super();
-        blackLeafSentinel = new Node<K, V>(null, null);
-        blackLeafSentinel.black = true;
+//        blackLeafSentinel = new Node<K, V>(null, null);
+//        blackLeafSentinel.black = true;
+    }
+
+    public Node<K, V> getRoot() {
+        return super.root;
     }
 
     public Node<K, V> insert(K key, V value) {
         Node<K, V> n = super.insert(key, value);
         n.black = false;
-        n.left = blackLeafSentinel;
-        n.right = blackLeafSentinel;
+//        n.left = blackLeafSentinel;
+//        n.right = blackLeafSentinel;
         repaint(n);
         return n;
     }
@@ -83,11 +87,13 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
 
         if (n.equals(p.right) && p.equals(gp.left)) {
             rotateLeft(p);
+            n = n.left;
         } else if (n.equals(p.left) && p.equals(gp.right)) {
             rotateRight(p);
+            n = n.right;
         }
 
-        repaint_case5(p);
+        repaint_case5(n);
     }
 
     // Case 5 - parent is red, uncle is black,
@@ -107,38 +113,42 @@ public class RedBlackTree<K, V> extends BinarySearchTree<K, V> {
         }
     }
 
-    // TODO: make generic for case 5 when there is no parent node
-/*    private void rotateLeft(Node n) {
-        Node p = n.parent;
-        p.left = n.right;
-        p.left.parent = p;
-
-        n.right = p.left.left;
-        n.right.parent = n;
-
-        p.left.left = n;
-        n.parent = p.left;
-
-    }*/
-
-
-    // TODO: needs testing
-    private void rotateRight_noParent(Node n) {
-        Node tmp = new Node(n.left);
-        tmp.parent = n.parent;
+    public void rotateLeft(Node n) {
+        Node tmp = new Node(n.right);
+        tmp.parent = null;
         if (n.parent != null) {
             if (n.parent.left.equals(n)) {
-                n.parent.left = tmp;
+                n.parent.setLeft(tmp);
             } else {
-                n.parent.right = tmp;
+                n.parent.setRight(tmp);
             }
         }
 
-        n.left = n.left.right;
-        n.left.parent = n;
+        n.setRight(n.right.left);
+        tmp.setLeft(n);
 
-        tmp.right = n;
-        n.parent = tmp;
+        if (n.equals(root)) {
+            setRoot(tmp);
+        }
+    }
+
+    public void rotateRight(Node n) {
+        Node tmp = new Node(n.left);
+        tmp.parent = null;
+        if (n.parent != null) {
+            if (n.parent.left != null && n.parent.left.equals(n)) {
+                n.parent.setLeft(tmp);
+            } else {
+                n.parent.setRight(tmp);
+            }
+        }
+
+        n.setLeft(n.left.right);
+        tmp.setRight(n);
+
+        if (n.equals(root)) {
+            setRoot(tmp);
+        }
     }
 
 /*    private void rotateRight(Node n) {

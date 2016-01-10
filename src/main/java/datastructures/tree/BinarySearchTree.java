@@ -9,9 +9,9 @@ public class BinarySearchTree<K, V> {
     // Java's red-black tree impl (self-balancing binary search tree)
     //private TreeMap treeMap;
 
-    private Node<K, V> root;
+    protected Node<K, V> root;
 
-    private boolean delete_useLeftSubstree = true;
+    private boolean delete_useLeftSubtree = true;
 
     public BinarySearchTree() {}
 
@@ -29,7 +29,7 @@ public class BinarySearchTree<K, V> {
 
         // Case where tree is empty
         if (root == null) {
-            root = new Node<K, V>(key, value);
+            setRoot(new Node<K, V>(key, value));
             return root;
         }
 
@@ -51,8 +51,8 @@ public class BinarySearchTree<K, V> {
 
         // Case where need to add new leaf node
         Node newNode = new Node<K, V>(key, value);
-        if (val < 0) parent.left = newNode;
-        else parent.right = newNode;
+        if (val < 0) parent.setLeft(newNode);
+        else parent.setRight(newNode);
         return newNode;
     }
 
@@ -64,12 +64,12 @@ public class BinarySearchTree<K, V> {
             Node childToMoveUp = node.right == null ? node.left : node.right;
             if (node.parent == null) {
                 assert node.equals(root);
-                root = childToMoveUp;
+                setRoot(childToMoveUp);
             } else {
                 if (node.parent.left.equals(node)) {
-                    node.parent.left = childToMoveUp;
+                    node.parent.setLeft(childToMoveUp);
                 } else if (node.parent.right.equals(node)) {
-                    node.parent.right = childToMoveUp;
+                    node.parent.setRight(childToMoveUp);
                 }
             }
 
@@ -77,8 +77,8 @@ public class BinarySearchTree<K, V> {
         }
 
         // 2 children
-        Node<K, V> predecessorOrSuccessor = delete_useLeftSubstree ? findMax(node.left) : findMin(node.right);
-        delete_useLeftSubstree = !delete_useLeftSubstree;
+        Node<K, V> predecessorOrSuccessor = delete_useLeftSubtree ? findMax(node.left) : findMin(node.right);
+        delete_useLeftSubtree = !delete_useLeftSubtree;
         node.key = predecessorOrSuccessor.key;
         node.value = predecessorOrSuccessor.value;
         delete(predecessorOrSuccessor);
@@ -100,6 +100,11 @@ public class BinarySearchTree<K, V> {
         }
 
         return currentNode;
+    }
+
+    protected void setRoot(Node<K, V> root) {
+        this.root = root;
+        root.parent = null;
     }
 
     public V search(Object key) {
@@ -141,7 +146,7 @@ public class BinarySearchTree<K, V> {
     }
 
     // TODO: switch to threaded binary tree impl
-    protected class Node<K, V> {
+    public class Node<K, V> {
 
         protected K key;
         protected V value;
@@ -181,6 +186,28 @@ public class BinarySearchTree<K, V> {
             int keyHash = key == null ? 0 : key.hashCode();
             int valueHash = value == null ? 0 : value.hashCode();
             return keyHash ^ valueHash;
+        }
+
+        public Node<K, V> getLeft() {
+            return left;
+        }
+
+        public void setLeft(Node<K, V> left) {
+            this.left = left;
+            if (left != null) {
+                left.parent = this;
+            }
+        }
+
+        public Node<K, V> getRight() {
+            return right;
+        }
+
+        public void setRight(Node<K, V> right) {
+            this.right = right;
+            if (right != null) {
+                right.parent = this;
+            }
         }
     }
 }
